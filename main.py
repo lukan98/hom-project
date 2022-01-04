@@ -1,16 +1,6 @@
-# This is a sample Python script.
+from models.customers import *
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+a = Customer(identifier=0, x=35, y=35, demand=0, ready_time=0, due_date=230, service_time=0)
+b = Customer(identifier=1, x=41, y=49, demand=10, ready_time=0, due_date=204, service_time=10)
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(calculate_distance(a, b))

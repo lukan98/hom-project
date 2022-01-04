@@ -37,6 +37,8 @@ def calculate_time_of_arrival(
         prev_customer: Customer
 ) -> float:
     time_of_arrival = prev_time_of_arrival + prev_customer.service_time + calculate_distance(customer, prev_customer)
+    time_of_arrival = math.ceil(time_of_arrival)
+
     if time_of_arrival < customer.ready_time:
         time_of_arrival = customer.ready_time
     return time_of_arrival

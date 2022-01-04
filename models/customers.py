@@ -12,6 +12,7 @@ class Customer:
             due_date: float,
             service_time: float
     ):
+        self.identifier = identifier
         self.x = x
         self.y = y
         self.demand = demand

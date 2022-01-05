@@ -8,29 +8,39 @@ def sort_by_distance(customer,customer_list):
     sorted_customers = sorted(customer_list, key=lambda other_customer:calculate_distance(customer,other_customer))
     return sorted_customers
 
+def sum_distances(route):
+    route.append(depot)
+    route.insert(0,depot)
+    distance = 0
+    for i in range(len(route)):
+        if i < len(route) - 1:
+            distance += calculate_distance(route[i],route[i+1])
+    return distance
+
+
 def filter_viable(neighbours, current_point,current_time, current_capacity, depot):
     distance_filter = filter((lambda n: calculate_time_of_arrival(depot,calculate_time_of_arrival(n,current_time,current_point),n) <= depot.due_date),neighbours)
     capacity_filter = filter((lambda n: n.demand <= current_capacity),distance_filter)
     return list(capacity_filter)
 
-def print_solution(route):
-    route.append(depot)
-    route.insert(0,depot)
-    prev_time = 0
-    for i in range(1,len(route)):
-        print(f'distance {i-1}-{i}: {calculate_distance(route[i],route[i-1])}')
-        print(f'service time {i}: {route[i].service_time}')
-        print(f'ready time: {route[i].ready_time}')
-        new_time = calculate_time_of_arrival(route[i],prev_time,route[i-1])
-        print('time: ',new_time)
-        prev_time = new_time
+def print_solution(routes):
 
+    print(len(routes))
 
+    total_distance = 0
+    for route_index,route in enumerate(routes):
+        route.append(depot)
+        prev_time = 0
+        print(f'{route_index+1}: ',end = '')
+        print('0(0)',end = '')
+        for i in range(1,len(route)):
+            service_time = calculate_time_of_arrival(route[i],prev_time,route[i-1])
+            print(f'->{route[i].identifier}({service_time})',end='')
+            prev_time = service_time
+        print()
+        total_distance += sum_distances(route)
 
-
-
-
-
+    print(total_distance)
 
 with open('./resources/instances/i1.txt', 'r', encoding='latin-1') as file:
     for index,line in enumerate(file):
@@ -57,7 +67,7 @@ route = []
 nr_routes = 0
 while len(remaining_customers) > 0:
 
-    print(f'remaining: {len(remaining_customers)}')
+    #print(f'remaining: {len(remaining_customers)}')
     remaining_customers = sort_by_distance(current_customer,remaining_customers)
     filtered = filter_viable(remaining_customers, current_customer, current_time, current_capacity, depot)
 
@@ -75,7 +85,6 @@ while len(remaining_customers) > 0:
 
         nr_routes += 1
         routes.append(route.copy())
-        print(route)
         route = []
         current_capacity = capacity
         current_time = 0
@@ -83,14 +92,7 @@ while len(remaining_customers) > 0:
 
 #print(routes)
 routes.append(route)
-print(remaining_customers)
-print(nr_routes)
-total = 0
-for route in routes:
-
-    total += len(route)
-print(total)
-#print_solution(route)
+print_solution(routes)
 
 
 

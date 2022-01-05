@@ -1,21 +1,22 @@
 import math
 from dataclasses import dataclass
 
+
 @dataclass
 class Customer:
-    identifier :int
-    x:int
-    y:int
-    demand:int
-    ready_time:int
+    identifier: int
+    x: int
+    y: int
+    demand: int
+    ready_time: int
     due_date: int
-    service_time:int
+    service_time: int
 
     def interval_of_service(self) -> (float, float):
         return self.ready_time, self.due_date
 
     def __str__(self):
-        return (self.demand,self.ready_time,self.due_date,self.service_time)
+        return self.demand, self.ready_time, self.due_date, self.service_time
 
     def __lt__(self, other):
         if self.due_date == other.due_date:
@@ -28,6 +29,7 @@ def calculate_distance(a: Customer, b: Customer) -> float:
     y_difference = math.pow(abs(a.y - b.y), 2)
 
     return math.sqrt(x_difference + y_difference)
+
 
 def calculate_time_of_arrival(
         customer: Customer,

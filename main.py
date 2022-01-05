@@ -20,16 +20,27 @@ def sum_distances(route):
 
 def filter_viable(neighbours, current_point,current_time, current_capacity, depot):
     distance_filter = filter((lambda n: calculate_time_of_arrival(depot,calculate_time_of_arrival(n,current_time,current_point),n) <= depot.due_date),neighbours)
-    capacity_filter = filter((lambda n: n.demand <= current_capacity),distance_filter)
+    due_date_filter = filter((lambda n: calculate_time_of_arrival(n, current_time, current_point) <= n.due_date), distance_filter)
+    capacity_filter = filter((lambda n: n.demand <= current_capacity), due_date_filter)
     return list(capacity_filter)
+
+def print_route(route):
+    route.append(depot)
+    route.insert(0,depot)
+    prev_time = 0
+    for i in range(1,len(route)):
+        new_time = calculate_time_of_arrival(route[i],prev_time,route[i-1])
+        print('time: ',new_time)
+        prev_time = new_time
 
 def print_solution(routes):
 
     print(len(routes))
 
     total_distance = 0
-    for route_index,route in enumerate(routes):
+    for route_index, route in enumerate(routes):
         route.append(depot)
+        route.insert(0, depot)
         prev_time = 0
         print(f'{route_index+1}: ',end = '')
         print('0(0)',end = '')
@@ -73,6 +84,8 @@ while len(remaining_customers) > 0:
 
     if len(filtered) > 0:
         chosen = filtered[0]
+        if chosen.identifier == 82:
+            print("here")
         route.append(chosen)
         remaining_customers.remove(chosen)
         current_time = calculate_time_of_arrival(chosen, current_time, current_customer)
@@ -93,11 +106,5 @@ while len(remaining_customers) > 0:
 #print(routes)
 routes.append(route)
 print_solution(routes)
-
-
-
-
-
-
 
 

@@ -12,9 +12,6 @@ class Customer:
     due_date: int
     service_time: int
 
-    def interval_of_service(self) -> (float, float):
-        return self.ready_time, self.due_date
-
     def __str__(self):
         return self.demand, self.ready_time, self.due_date, self.service_time
 
@@ -22,6 +19,9 @@ class Customer:
         if self.due_date == other.due_date:
             return self.ready_time < other.ready_time
         return self.due_date < other.due_date
+
+    def interval_of_service(self) -> (float, float):
+        return self.ready_time, self.due_date
 
 
 def calculate_distance(a: Customer, b: Customer) -> float:

@@ -1,7 +1,7 @@
 from models.customers import *
+from instanceio.input import parse_instance
 
-
-customers = []
+depot, customers, vehicle_count, capacity = parse_instance(1)
 routes = []
 
 def sort_by_distance(customer,customer_list):
@@ -53,19 +53,6 @@ def print_solution(routes):
 
     print(total_distance)
 
-with open('./resources/instances/i1.txt', 'r', encoding='latin-1') as file:
-    for index,line in enumerate(file):
-        if index == 2: #vehicles and capacities
-            vehicles,capacity = [int(i) for i in line.split()]
-        elif index == 7:
-            identifier,x,y,demand,ready_time,due_date,service_time = [int(i) for i in line.split()]
-            depot = Customer(identifier,x,y,demand,ready_time,due_date,service_time)
-
-        elif index > 7:
-            identifier,x,y,demand,ready_time,due_date,service_time = [int(i) for i in line.split()]
-            customer = Customer(identifier,x,y,demand,ready_time,due_date,service_time)
-            customers.append(customer)
-
 #customers = sorted(customers,key=lambda customer:customer.due_date)
 #customers = sorted(customers,key=lambda customer:customer.ready_time)
 
@@ -84,8 +71,6 @@ while len(remaining_customers) > 0:
 
     if len(filtered) > 0:
         chosen = filtered[0]
-        if chosen.identifier == 82:
-            print("here")
         route.append(chosen)
         remaining_customers.remove(chosen)
         current_time = calculate_time_of_arrival(chosen, current_time, current_customer)

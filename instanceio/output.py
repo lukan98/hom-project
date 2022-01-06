@@ -16,6 +16,7 @@ def get_solution_string(depot: Customer, routes: [[Customer]]) -> str:
 
         time_of_arrival = calculate_time_of_arrival(route[0], prev_time, depot)
         solution_string += f'->{route[0].identifier}({time_of_arrival})'
+        prev_time = time_of_arrival
 
         for i in range(1, len(route)):
             time_of_arrival = calculate_time_of_arrival(route[i], prev_time, route[i - 1])

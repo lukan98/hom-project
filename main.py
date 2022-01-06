@@ -2,7 +2,7 @@ from models.customers import *
 from instanceio.input import parse_instance
 from instanceio.output import write_solution, print_solution
 
-INSTANCE_INDEX = 1
+INSTANCE_INDEX = 2
 depot, customers, vehicle_count, capacity = parse_instance(INSTANCE_INDEX)
 routes = []
 

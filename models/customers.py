@@ -42,3 +42,12 @@ def calculate_time_of_arrival(
     if time_of_arrival < customer.ready_time:
         time_of_arrival = customer.ready_time
     return time_of_arrival
+
+
+def calculate_route_length(depot: Customer, route: [Customer]):
+    distance = 0
+    distance += calculate_distance(depot, route[0])
+    for i in range(1, len(route)):
+        distance += calculate_distance(route[i-1], route[i])
+    distance += calculate_distance(route[-1], depot)
+    return distance

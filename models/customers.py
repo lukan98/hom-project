@@ -15,11 +15,6 @@ class Customer:
     def __str__(self):
         return self.demand, self.ready_time, self.due_date, self.service_time
 
-    def __lt__(self, other):
-        if self.due_date == other.due_date:
-            return self.ready_time < other.ready_time
-        return self.due_date < other.due_date
-
     def interval_of_service(self) -> (float, float):
         return self.ready_time, self.due_date
 
@@ -53,8 +48,34 @@ def calculate_route_length(depot: Customer, route: [Customer]):
     return distance
 
 
-def sort_by_time_of_arrival(current_customer: Customer, customers: [Customer], prev_time_of_arrival):
+def sort_by_time_of_arrival(current_customer: Customer, customers: [Customer], prev_time_of_arrival: int):
     return sorted(customers,
                   key=lambda other_customer: calculate_time_of_arrival(other_customer,
                                                                        prev_time_of_arrival,
                                                                        current_customer))
+
+
+def filter_viable_customers(
+        current_customer: Customer,
+        depot: Customer,
+        customers: [Customer],
+        prev_time_of_arrival: int,
+        current_capacity: int
+) -> [Customer]:
+    capacity_filter = filter((lambda customer:
+                              customer.demand <= current_capacity),
+                             customers)
+    due_date_filter = filter((lambda customer:
+                              calculate_time_of_arrival(customer,
+                                                        prev_time_of_arrival,
+                                                        current_customer) <= customer.due_date),
+                             capacity_filter)
+    distance_filter = filter((lambda customer:
+                              calculate_time_of_arrival(depot,
+                                                        calculate_time_of_arrival(customer,
+                                                                                  prev_time_of_arrival,
+                                                                                  current_customer),
+                                                        customer) <= depot.due_date),
+                             due_date_filter)
+
+    return list(distance_filter)

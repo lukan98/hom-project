@@ -79,3 +79,34 @@ def filter_viable_customers(
                              due_date_filter)
 
     return list(distance_filter)
+
+
+def check_route_demand_validity(route: [Customer], capacity: int) -> bool:
+    return sum(map(lambda customer: customer.demand, route)) <= capacity
+
+
+def check_scheduling_validity(depot: Customer, route: [Customer]) -> bool:
+    time_of_arrival = 0
+    time_of_arrival = calculate_time_of_arrival(route[0], time_of_arrival, depot)
+
+    if time_of_arrival > route[0].due_date:
+        return False
+    if time_of_arrival + calculate_time_of_arrival(depot, time_of_arrival, route[0]) > depot.due_date:
+        return False
+
+    for i in range(1, len(route)):
+        time_of_arrival = calculate_time_of_arrival(route[i], time_of_arrival, route[i-1])
+
+        if time_of_arrival > route[i].due_date:
+            return False
+        if calculate_time_of_arrival(depot, time_of_arrival, route[i]) > depot.due_date:
+            return False
+
+    if calculate_time_of_arrival(depot, time_of_arrival, route[-1]) > depot.due_date:
+        return False
+
+    return True
+
+
+def check_route_validity(depot: Customer, route: [Customer], capacity: int) -> bool:
+    return check_route_demand_validity(route, capacity) and check_scheduling_validity(depot, route)

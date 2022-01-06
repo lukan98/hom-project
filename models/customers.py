@@ -33,8 +33,8 @@ def calculate_distance(a: Customer, b: Customer) -> float:
 
 def calculate_time_of_arrival(
         customer: Customer,
-        prev_time_of_arrival: float = 0,
-        prev_customer: Customer = None
+        prev_time_of_arrival: float,
+        prev_customer: Customer
 ) -> float:
     time_of_arrival = prev_time_of_arrival + prev_customer.service_time + calculate_distance(customer, prev_customer)
     time_of_arrival = math.ceil(time_of_arrival)

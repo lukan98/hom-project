@@ -2,14 +2,10 @@ from models.customers import *
 from instanceio.input import parse_instance
 from instanceio.output import write_solution, print_solution
 
+
 INSTANCE_INDEX = 6
 depot, customers, vehicle_count, capacity = parse_instance(INSTANCE_INDEX)
 routes = []
-
-
-def sort_by_distance(customer,customer_list):
-    sorted_customers = sorted(customer_list, key=lambda other_customer:calculate_distance(customer,other_customer))
-    return sorted_customers
 
 
 def filter_viable(neighbours, current_point,current_time, current_capacity, depot):
@@ -17,16 +13,6 @@ def filter_viable(neighbours, current_point,current_time, current_capacity, depo
     due_date_filter = filter((lambda n: calculate_time_of_arrival(n, current_time, current_point) <= n.due_date), distance_filter)
     capacity_filter = filter((lambda n: n.demand <= current_capacity), due_date_filter)
     return list(capacity_filter)
-
-
-def print_route(route):
-    route.append(depot)
-    route.insert(0,depot)
-    prev_time = 0
-    for i in range(1,len(route)):
-        new_time = calculate_time_of_arrival(route[i],prev_time,route[i-1])
-        print('time: ',new_time)
-        prev_time = new_time
 
 
 remaining_customers = customers.copy()

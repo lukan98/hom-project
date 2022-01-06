@@ -51,3 +51,10 @@ def calculate_route_length(depot: Customer, route: [Customer]):
         distance += calculate_distance(route[i-1], route[i])
     distance += calculate_distance(route[-1], depot)
     return distance
+
+
+def sort_by_time_of_arrival(current_customer: Customer, customers: [Customer], prev_time_of_arrival):
+    return sorted(customers,
+                  key=lambda other_customer: calculate_time_of_arrival(other_customer,
+                                                                       prev_time_of_arrival,
+                                                                       current_customer))

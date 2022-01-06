@@ -2,7 +2,7 @@ from models.customers import *
 from instanceio.input import parse_instance
 from instanceio.output import write_solution, print_solution
 
-INSTANCE_INDEX = 2
+INSTANCE_INDEX = 6
 depot, customers, vehicle_count, capacity = parse_instance(INSTANCE_INDEX)
 routes = []
 
@@ -39,7 +39,7 @@ nr_routes = 0
 while len(remaining_customers) > 0:
 
     # print(f'remaining: {len(remaining_customers)}')
-    remaining_customers = sort_by_distance(current_customer,remaining_customers)
+    remaining_customers = sort_by_time_of_arrival(current_customer, remaining_customers, current_time)
     filtered = filter_viable(remaining_customers, current_customer, current_time, current_capacity, depot)
 
     if len(filtered) > 0:

@@ -110,3 +110,13 @@ def check_scheduling_validity(depot: Customer, route: [Customer]) -> bool:
 
 def check_route_validity(depot: Customer, route: [Customer], capacity: int) -> bool:
     return check_route_demand_validity(route, capacity) and check_scheduling_validity(depot, route)
+
+
+def insert_customer_into_route(depot: Customer, customer: Customer, route: [Customer], capacity: int) -> [[Customer]]:
+    generated_routes = []
+    for i in range(len(route)):
+        modified_route = route.copy()
+        modified_route.insert(i, customer)
+        if check_route_validity(depot, modified_route, capacity):
+            generated_routes.append(modified_route)
+    return generated_routes

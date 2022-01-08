@@ -160,7 +160,6 @@ def generate_neighbours(routes: [[Customer]], depot:Customer, customers: [Custom
                     neighbours.append(new_routes)
                     neighbours_quality.append(return_solution_quality(depot, new_routes))
 
-    sorted_neighbours = sorted(neighbours, key=(lambda neighbor: (neighbours_quality[neighbours.index(neighbor)][0],
-                                                                  neighbours_quality[neighbours.index(neighbor)][1])))
+    sorted_neighbours = sorted(neighbours, key=(lambda neighbor: neighbours_quality[neighbours.index(neighbor)]))
 
     return sorted_neighbours,neighbours_quality

@@ -12,7 +12,7 @@ write_solution(INSTANCE_INDEX, depot, routes)
 
 initial_quality = return_solution_quality(depot,routes)
 successes = []
-neighbours = [[[Customer]]]
+neighbours = []
 neighbours_quality = []
 hits = 0
 for route in routes:
@@ -34,4 +34,9 @@ for route in routes:
 
 print(len(neighbours))
 print(hits)
+
+sorted_neighbours = sorted(neighbours, key=(lambda neighbor:(neighbours_quality[neighbours.index(neighbor)][0],
+                                            neighbours_quality[neighbours.index(neighbor)][1])))
+
+print_solution(depot,sorted_neighbours[0])
 print("done")

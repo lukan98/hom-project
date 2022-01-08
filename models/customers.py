@@ -139,3 +139,28 @@ def return_solution_quality(depot: Customer, routes: [[Customer]]) -> (int, floa
     nr_vehicles = len(routes)
     distance = sum(map(lambda route: calculate_route_length(depot, route), routes))
     return nr_vehicles, distance
+
+def generate_neighbours(routes: [[Customer]], depot:Customer, customers: [Customer], capacity: int):
+
+    neighbours = []
+    neighbours_quality = []
+
+    for route in routes:
+        customers_not_in_route = list(filter(lambda c: c not in route, customers))
+        for customer in customers_not_in_route:
+            generated_routes = insert_customer_into_route(depot, customer, route, capacity)
+            if len(generated_routes) != 0:
+                for generated_route in generated_routes:
+                    old_route_index = find_route_by_customer(customer, routes)
+                    new_routes = [route[:] for route in routes]
+                    new_routes[old_route_index].remove(customer)
+                    if len(new_routes[old_route_index]) == 0:
+                        new_routes.remove(new_routes[old_route_index])
+                    new_routes[routes.index(route)] = generated_route
+                    neighbours.append(new_routes)
+                    neighbours_quality.append(return_solution_quality(depot, new_routes))
+
+    sorted_neighbours = sorted(neighbours, key=(lambda neighbor: (neighbours_quality[neighbours.index(neighbor)][0],
+                                                                  neighbours_quality[neighbours.index(neighbor)][1])))
+
+    return sorted_neighbours,neighbours_quality

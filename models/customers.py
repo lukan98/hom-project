@@ -134,13 +134,22 @@ def sum_all_customers(routes: [[Customer]]):
         sum += len(route)
     return sum
 
-
 def return_solution_quality(depot: Customer, routes: [[Customer]]) -> (int, float):
     nr_vehicles = len(routes)
     distance = sum(map(lambda route: calculate_route_length(depot, route), routes))
     return nr_vehicles, distance
 
-def generate_neighbours(routes: [[Customer]], depot:Customer, customers: [Customer], capacity: int):
+def generate_neighbours_greedy(routes: [[Customer]], depot:Customer, customers: [Customer], capacity: int) -> [[[Customer]]]:
+    neighbours,neighbours_quality = generate_neighbours(routes,depot,customers,capacity)
+    sorted_neighbours = sorted(neighbours, key=(lambda neighbor: neighbours_quality[neighbours.index(neighbor)]))
+    return sorted_neighbours
+
+def generate_neighbours_heuristic(routes: [[Customer]], depot:Customer, customers: [Customer], capacity: int)-> [[[Customer]]]:
+    neighbours,neighbours_quality = generate_neighbours(routes,depot,customers,capacity)
+    sorted_neighbours = sorted(neighbours, key=lambda neighbour: (min([len(route) for route in neighbour]),(-neighbours_quality[neighbours.index(neighbour)][1])), reverse=True)
+    return sorted_neighbours
+
+def generate_neighbours(routes: [[Customer]], depot:Customer, customers: [Customer], capacity: int) -> ([[[Customer]]],[(int,float)]):
 
     neighbours = []
     neighbours_quality = []
@@ -160,6 +169,4 @@ def generate_neighbours(routes: [[Customer]], depot:Customer, customers: [Custom
                     neighbours.append(new_routes)
                     neighbours_quality.append(return_solution_quality(depot, new_routes))
 
-    sorted_neighbours = sorted(neighbours, key=(lambda neighbor: neighbours_quality[neighbours.index(neighbor)]))
-
-    return sorted_neighbours,neighbours_quality
+    return neighbours,neighbours_quality

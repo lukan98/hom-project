@@ -3,6 +3,8 @@ from instanceio.input import parse_instance
 from instanceio.output import write_solution, print_solution
 from models.customers import *
 from algorithms.local import run as run_local
+from algorithms.heuristic_search import run as run_heuristic
+
 
 INSTANCE_INDEX = 2
 depot, customers, vehicle_count, capacity = parse_instance(INSTANCE_INDEX)
@@ -16,4 +18,4 @@ depot, customers, vehicle_count, capacity = parse_instance(INSTANCE_INDEX)
 #print("\nFirst neighbour:")
 #print_solution(depot,neighbours[0])
 
-run_local(*parse_instance(INSTANCE_INDEX))
+run_heuristic(*parse_instance(INSTANCE_INDEX))

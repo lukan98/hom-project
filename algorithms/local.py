@@ -18,7 +18,7 @@ def run(
     while (quality := return_solution_quality(depot, routes)) < best_quality:
         best_quality = quality
         best_solution = routes
-        neighbours = generate_neighbours(routes, depot, customers, capacity)[0]
+        neighbours = generate_neighbours_greedy(routes, depot, customers, capacity)
 
         if len(neighbours) > 0:
             routes = neighbours[0]

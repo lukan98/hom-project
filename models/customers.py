@@ -43,7 +43,7 @@ def calculate_route_length(depot: Customer, route: [Customer]):
     distance = 0
     distance += calculate_distance(depot, route[0])
     for i in range(1, len(route)):
-        distance += calculate_distance(route[i-1], route[i])
+        distance += calculate_distance(route[i - 1], route[i])
     distance += calculate_distance(route[-1], depot)
     return distance
 
@@ -95,7 +95,7 @@ def check_scheduling_validity(depot: Customer, route: [Customer]) -> bool:
         return False
 
     for i in range(1, len(route)):
-        time_of_arrival = calculate_time_of_arrival(route[i], time_of_arrival, route[i-1])
+        time_of_arrival = calculate_time_of_arrival(route[i], time_of_arrival, route[i - 1])
 
         if time_of_arrival > route[i].due_date:
             return False
@@ -120,3 +120,22 @@ def insert_customer_into_route(depot: Customer, customer: Customer, route: [Cust
         if check_route_validity(depot, modified_route, capacity):
             generated_routes.append(modified_route)
     return generated_routes
+
+
+def find_route_by_customer(customer: Customer, routes: [[Customer]]) -> int:
+    for i, route in enumerate(routes):
+        if customer in route:
+            return i
+
+
+def sum_all_customers(routes: [[Customer]]):
+    sum = 0
+    for route in routes:
+        sum += len(route)
+    return sum
+
+
+def return_solution_quality(depot: Customer, routes: [[Customer]]) -> (int, float):
+    nr_vehicles = len(routes)
+    distance = sum(map(lambda route: calculate_route_length(depot, route), routes))
+    return nr_vehicles, distance

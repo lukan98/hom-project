@@ -1,8 +1,7 @@
 from algorithms.greedy import run as run_greedy
 from instanceio.input import parse_instance
 from instanceio.output import write_solution, print_solution
-from models.customers import insert_customer_into_route
-
+from models.customers import *
 
 INSTANCE_INDEX = 1
 depot, customers, vehicle_count, capacity = parse_instance(INSTANCE_INDEX)
@@ -11,13 +10,28 @@ routes = run_greedy(depot, customers, vehicle_count, capacity)
 print_solution(depot, routes)
 write_solution(INSTANCE_INDEX, depot, routes)
 
+initial_quality = return_solution_quality(depot,routes)
 successes = []
+neighbours = [[[Customer]]]
+neighbours_quality = []
+hits = 0
 for route in routes:
+
     customers_not_in_route = list(filter(lambda c: c not in route, customers))
     for customer in customers_not_in_route:
         generated_routes = insert_customer_into_route(depot, customer, route, capacity)
+        if len(generated_routes) > 1:
+            hits+=1
         if len(generated_routes) != 0:
             for generated_route in generated_routes:
-                successes.append(generated_route)
+                old_route_index = find_route_by_customer(customer,routes)
+                new_routes = [route[:] for route in routes]
+                new_routes[old_route_index].remove(customer)
+                if len(new_routes[old_route_index]) == 0:
+                    new_routes.remove(new_routes[old_route_index])
+                neighbours.append(new_routes)
+                neighbours_quality.append(return_solution_quality(depot,new_routes))
 
-print(len(successes))
+print(len(neighbours))
+print(hits)
+print("done")

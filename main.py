@@ -29,6 +29,7 @@ for route in routes:
                 new_routes[old_route_index].remove(customer)
                 if len(new_routes[old_route_index]) == 0:
                     new_routes.remove(new_routes[old_route_index])
+                new_routes[routes.index(route)] = generated_route
                 neighbours.append(new_routes)
                 neighbours_quality.append(return_solution_quality(depot,new_routes))
 
@@ -40,3 +41,9 @@ sorted_neighbours = sorted(neighbours, key=(lambda neighbor:(neighbours_quality[
 
 print_solution(depot,sorted_neighbours[0])
 print("done")
+
+for customer in customers:
+    route = find_route_by_customer(customer, sorted_neighbours[0])
+    if route is None:
+        print(find_route_by_customer(customer, routes))
+        print(customer.identifier)

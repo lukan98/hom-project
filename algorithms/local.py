@@ -1,4 +1,5 @@
-from models.customers import *
+import math
+from models.customers import Customer, return_solution_quality, generate_neighbours_greedy
 from time import perf_counter
 
 
@@ -10,7 +11,7 @@ def run(
         routes: [[[Customer]]],
         time_limit: float = math.inf,
         verbose=False
-) -> [[Customer]]:
+) -> ([[Customer]], int):
     start_time = perf_counter()
     iterations = 0
 
@@ -32,4 +33,4 @@ def run(
         if verbose:
             print(f'Iteration: {iterations}, best solution quality: {best_quality}')
 
-    return best_solution
+    return best_solution, iterations

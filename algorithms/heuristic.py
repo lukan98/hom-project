@@ -1,32 +1,47 @@
 from models.customers import *
-from algorithms.greedy import run as run_greedy
-from math import inf
-from instanceio.output import *
+from time import perf_counter
 
 
 def run(
         depot: Customer,
         customers: [Customer],
         vehicle_count: int,
-        capacity: int
-) -> [[Customer]]:
-    routes = run_greedy(depot, customers, vehicle_count, capacity)
-    best_quality = inf, inf
+        capacity: int,
+        routes: [[[Customer]]],
+        neighbour_sorting_fn,
+        patience_limit: int = 100,
+        time_limit: float = math.inf,
+        verbose=False
+) -> ([[Customer]], int):
+    start_time = perf_counter()
+    iterations = 0
+    patience = 0
+
+    best_quality = math.inf, math.inf
     best_solution = None
 
-    iters = 0
-    while iters < 100:
-        quality = return_solution_quality(depot, routes)
-        best_quality = quality
-        best_solution = routes
-        neighbours = generate_neighbours_heuristic(routes, depot, customers, capacity)
+    while (quality := return_solution_quality(depot, routes)) < best_quality and \
+            perf_counter() - start_time <= time_limit:
 
-        if len(neighbours) > 0:
+        if quality < best_quality:
+            best_quality = quality
+            best_solution = routes
+
+        neighbours = neighbour_sorting_fn(routes, depot, customers, capacity)
+        better_neighbours = list(filter(lambda neighbour: return_solution_quality(depot, neighbour) <= best_quality,
+                                        neighbours))
+
+        iterations += 1
+        if len(better_neighbours) > 0:
+            routes = better_neighbours[0]
+            patience = 0
+        elif patience < patience_limit and len(neighbours) > 0:
             routes = neighbours[0]
-            iters += 1
+            patience += 1
         else:
             break
-        if iters%10 == 0: print(f'iter: {iters} best quality: {best_quality}')
 
-    print_solution(depot, best_solution)
-    print(iters)
+        if verbose:
+            print(f'Iteration: {iterations}, best solution quality: {best_quality}')
+
+    return best_solution, iterations

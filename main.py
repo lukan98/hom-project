@@ -1,5 +1,5 @@
 from instanceio.input import parse_instance
-from instanceio.output import write_solution, print_solution
+from instanceio.output import write_solution
 from algorithms.local import run as run_local
 from algorithms.heuristic import run as run_heuristic
 from algorithms.greedy import run as run_greedy
@@ -18,9 +18,6 @@ local_solution, local_iterations = run_local(depot=depot,
                                              capacity=capacity,
                                              routes=greedy_solution,
                                              time_limit=TIME_LIMIT * 60)
-
-print_solution(depot, local_solution)
-print(f'LOCAL SEARCH DONE: {local_iterations}')
 
 heuristic_solution, heuristic_iterations = run_heuristic(depot=depot,
                                                          customers=customers,

@@ -11,7 +11,7 @@ def run(
         capacity: int
 ) -> [[Customer]]:
     routes = run_greedy(depot, customers, vehicle_count, capacity)
-    best_quality = math.inf, math.inf
+    best_quality = inf, inf
     best_solution = None
 
     iters = 0

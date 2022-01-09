@@ -37,6 +37,13 @@ def print_solution(depot: Customer, routes: [[Customer]]):
     print(get_solution_string(depot, routes))
 
 
-def write_solution(index: int, depot: Customer, routes: [[Customer]]):
-    with open(f'{SOLUTIONS_PATH}{index}.txt', 'w') as file:
+def write_solution(index: int, depot: Customer, routes: [[Customer]], time_limit: int = None):
+    file_path = SOLUTIONS_PATH + str(index) + '/'
+
+    if time_limit is None:
+        file_path += 'no_time_limit.txt'
+    else:
+        file_path += str(time_limit) + '.txt'
+
+    with open(file_path, 'w') as file:
         file.write(get_solution_string(depot, routes))

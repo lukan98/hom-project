@@ -1,21 +1,14 @@
-from algorithms.greedy import run as run_greedy
 from instanceio.input import parse_instance
-from instanceio.output import write_solution, print_solution
-from models.customers import *
+from instanceio.output import write_solution
 from algorithms.local import run as run_local
-from algorithms.heuristic_search import run as run_heuristic
+from algorithms.greedy import run as run_greedy
 
 
-INSTANCE_INDEX = 2
+INSTANCE_INDEX = 6
+TIME_LIMIT = 20
+
 depot, customers, vehicle_count, capacity = parse_instance(INSTANCE_INDEX)
-#routes = run_greedy(depot, customers, vehicle_count, capacity)
+greedy_solution = run_greedy(depot, customers, vehicle_count, capacity)
+local_solution = run_local(depot, customers, vehicle_count, capacity, greedy_solution, time_limit=TIME_LIMIT * 60)
 
-#print_solution(depot, routes)
-#write_solution(INSTANCE_INDEX, depot, routes)
-
-#initial_quality = return_solution_quality(depot,routes)
-#neighbours, quality = generate_neighbours(routes,depot,customers,capacity)
-#print("\nFirst neighbour:")
-#print_solution(depot,neighbours[0])
-
-run_heuristic(*parse_instance(INSTANCE_INDEX))
+write_solution(INSTANCE_INDEX, depot, local_solution, time_limit=TIME_LIMIT)

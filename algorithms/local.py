@@ -1,31 +1,35 @@
 from models.customers import *
-from algorithms.greedy import run as run_greedy
-from math import inf
-from instanceio.output import *
+from time import perf_counter
 
 
 def run(
         depot: Customer,
         customers: [Customer],
         vehicle_count: int,
-        capacity: int
+        capacity: int,
+        routes: [[[Customer]]],
+        time_limit: float = math.inf,
+        verbose=False
 ) -> [[Customer]]:
-    routes = run_greedy(depot, customers, vehicle_count, capacity)
+    start_time = perf_counter()
+    iterations = 0
+
     best_quality = math.inf, math.inf
     best_solution = None
 
-    iters = 0
-    while (quality := return_solution_quality(depot, routes)) < best_quality:
+    while (quality := return_solution_quality(depot, routes)) < best_quality and \
+            perf_counter() - start_time <= time_limit:
         best_quality = quality
         best_solution = routes
         neighbours = generate_neighbours_greedy(routes, depot, customers, capacity)
 
         if len(neighbours) > 0:
             routes = neighbours[0]
-            iters += 1
+            iterations += 1
         else:
             break
-        print(f'iter: {iters} best quality: {best_quality}')
 
-    print_solution(depot, best_solution)
-    print(iters)
+        if verbose:
+            print(f'Iteration: {iterations}, best solution quality: {best_quality}')
+
+    return best_solution

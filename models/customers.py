@@ -195,7 +195,7 @@ def generate_neighbours(
     return neighbours, neighbours_quality
 
 
-def generate_neighbour(routes: [[Customer]], depot:Customer, customers: [Customer], capacity: int) -> ([[[Customer]]],[(int,float)]):
+def generate_neighbour(routes: [[Customer]], depot:Customer, customers: [Customer], capacity: int) -> [[[Customer]]]:
 
     customer = choice(customers)
     old_route_index = find_route_by_customer(customer,routes)
@@ -213,13 +213,13 @@ def generate_neighbour(routes: [[Customer]], depot:Customer, customers: [Custome
             if len(new_routes[old_route_index]) == 0:
                 new_routes.remove(new_routes[old_route_index])
             new_routes[routes.index(route)] = generated_route
-            return new_routes,return_solution_quality(depot,new_routes)
+            return new_routes
 
     new_routes[old_route_index].remove(customer)
     if len(new_routes[old_route_index]) == 0:
         new_routes.remove(new_routes[old_route_index])
     new_routes.append([customer])
-    return new_routes,return_solution_quality(depot,new_routes)
+    return new_routes
 
 
 

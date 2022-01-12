@@ -37,3 +37,9 @@ best_solution = local_solution if local_solution_quality < custom_heuristic_qual
 best_iterations = local_iterations if local_solution_quality < custom_heuristic_quality else heuristic_iterations
 
 write_solution(INSTANCE_INDEX, depot, best_solution, best_iterations, time_limit=TIME_LIMIT)
+#local_solution = run_local(depot, customers, vehicle_count, capacity, greedy_solution, time_limit=TIME_LIMIT * 60)
+#new_heuristic_solution = run_new_heuristic(depot,customers,vehicle_count, capacity)
+SA_solution = run_SA(depot, customers, vehicle_count, capacity, greedy_solution, time_limit=TIME_LIMIT * 60,verbose= True)
+print_solution(depot,SA_solution[0])
+
+#write_solution(INSTANCE_INDEX, depot, local_solution, time_limit=TIME_LIMIT)

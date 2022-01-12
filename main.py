@@ -1,12 +1,13 @@
 from instanceio.input import parse_instance
-from instanceio.output import write_solution
+from instanceio.output import write_solution, print_solution
 from algorithms.local import run as run_local
 from algorithms.heuristic import run as run_heuristic
 from algorithms.greedy import run as run_greedy
+from algorithms.SA import run as run_sa
 from models.customers import generate_neighbours_heuristic, return_solution_quality
 
 
-INSTANCE_INDEX = 6
+INSTANCE_INDEX = 1
 TIME_LIMIT = 20
 
 depot, customers, vehicle_count, capacity = parse_instance(INSTANCE_INDEX)
@@ -37,9 +38,11 @@ best_solution = local_solution if local_solution_quality < custom_heuristic_qual
 best_iterations = local_iterations if local_solution_quality < custom_heuristic_quality else heuristic_iterations
 
 write_solution(INSTANCE_INDEX, depot, best_solution, best_iterations, time_limit=TIME_LIMIT)
-#local_solution = run_local(depot, customers, vehicle_count, capacity, greedy_solution, time_limit=TIME_LIMIT * 60)
-#new_heuristic_solution = run_new_heuristic(depot,customers,vehicle_count, capacity)
-SA_solution = run_SA(depot, customers, vehicle_count, capacity, greedy_solution, time_limit=TIME_LIMIT * 60,verbose= True)
+SA_solution = run_sa(depot,
+                     customers,
+                     vehicle_count,
+                     capacity,
+                     greedy_solution,
+                     time_limit=TIME_LIMIT * 60,
+                     verbose=True)
 print_solution(depot,SA_solution[0])
-
-#write_solution(INSTANCE_INDEX, depot, local_solution, time_limit=TIME_LIMIT)

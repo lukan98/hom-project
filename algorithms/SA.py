@@ -15,13 +15,17 @@ def slow_decrease(T):
 T0 = 1000
 decrement_function = slow_decrease
 T_final = 0.001
-delta_correction_factor = 1000
 
 def advance_neighbourhood(routes: [[Customer]], depot: Customer, customers: [Customer], capacity: int, T: int) -> [
     [[Customer]]]:
     new_routes = generate_neighbour(routes, depot, customers, capacity)
     old_quality = return_solution_quality(depot, routes)
     new_quality = return_solution_quality(depot, new_routes)
+
+    if new_quality[0] - old_quality[0] <= 0:
+        delta_correction_factor = 0
+    else:
+        delta_correction_factor = 1000
 
     delta = new_quality[1] - old_quality[1] + delta_correction_factor
     if new_quality < old_quality or random() < math.exp(-delta/T):

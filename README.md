@@ -24,14 +24,16 @@ It also includes a validator for checking solution feasibility and reported dist
 
 ## Requirements
 
-- Python 3.8 or newer
-- `numpy`
-- `click` (only required by the validator)
+- Python 3.11.9 (pinned in `.tool-versions`; the code requires 3.8 or newer)
+- `numpy` and `click` (only required by the validator)
 
-Install the dependencies with:
+Install the pinned Python version and dependencies:
 
 ```bash
-pip install numpy click
+asdf install
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
 ## Run

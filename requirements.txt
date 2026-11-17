@@ -1,0 +1,3 @@
+# Needed only by the solution validator in resources/validator/
+numpy
+click
